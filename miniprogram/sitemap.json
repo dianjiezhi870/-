@@ -1,0 +1,1 @@
+{"desc":"仅公开发现页可被索引，个人资料和管理页面不索引。","rules":[{"action":"allow","page":"pages/index/index"},{"action":"disallow","page":"*"}]}

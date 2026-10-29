@@ -1,0 +1,28 @@
+<view class="admin-page page safe-bottom">
+  <view class="admin-intro"><text class="eyebrow">CURATE THE LIGHT</text><view class="page-title">管理空间</view><view class="intro-copy">让每一次分享，都被温柔地看见。</view></view>
+  <view wx:if="{{demo}}" class="demo-note">演示模式 · 数据仅保存在本机；正式管理员由服务端配置。</view>
+  <view wx:if="{{loading && !authorized}}" class="state-card card"><view class="state-symbol">◌</view><view>正在确认管理员身份…</view></view>
+  <view wx:elif="{{error}}" class="state-card card"><view class="state-symbol">◎</view><view>{{error}}</view><button wx:if="{{authorized}}" class="button-secondary state-action" bindtap="refresh">重新加载</button><button wx:else class="button-secondary state-action" bindtap="goProfile">返回我的</button></view>
+  <block wx:if="{{authorized}}">
+    <view class="music-card card">
+      <view class="section-heading"><view><view class="section-title">首页音乐</view><view class="section-subtitle">音乐由管理员统一设置，访客自主点播。</view></view><switch color="#24857e" checked="{{musicEnabled}}" disabled="{{saving}}" bindchange="changeMusicEnabled" /></view>
+      <view class="music-field"><text class="field-label">音乐名称</text><input class="music-input" placeholder="例如：山间的一束光" maxlength="80" value="{{musicTitle}}" data-field="musicTitle" bindinput="changeMusicField" disabled="{{saving}}" /></view>
+      <view class="music-field"><text class="field-label">音乐人</text><input class="music-input" placeholder="填写音乐人（选填）" maxlength="80" value="{{musicArtist}}" data-field="musicArtist" bindinput="changeMusicField" disabled="{{saving}}" /></view>
+      <button class="audio-picker" bindtap="chooseMusic" loading="{{choosingMusic}}" disabled="{{saving || choosingMusic}}"><text class="audio-symbol">♫</text><view class="audio-text"><text class="audio-title">{{selectedMusicName || (musicFileId ? '已设置音乐，点此更换' : '选择一首首页音乐')}}</text><text class="audio-subtitle">从微信聊天文件选择 · MP3 / M4A · 最大 20MB</text></view><text class="picker-arrow">›</text></button>
+      <view class="music-help">请上传拥有使用权的音频。关闭后首页不再展示音乐入口。</view>
+      <button class="save-music button" bindtap="saveMusic" loading="{{saving}}" disabled="{{saving || choosingMusic || !musicDirty}}">{{saving ? '正在更新…' : '保存首页音乐'}}</button>
+    </view>
+
+    <view class="queue-heading"><view><text class="section-title">待审作品</text><text class="section-subtitle">审核整组照片与文字，通过后公开。</text></view><text class="queue-count">{{items.length}}</text></view>
+    <view wx:if="{{listError}}" class="state-card card"><view>{{listError}}</view><button class="button-secondary state-action" bindtap="refresh">重新加载</button></view>
+    <view wx:elif="{{!items.length}}" class="state-card card"><view class="state-symbol">✓</view><view class="empty-title">暂时没有待审作品</view><view class="empty-copy">新的摄影作品会出现在这里。</view></view>
+    <view wx:for="{{items}}" wx:key="id" class="review-card card">
+      <view class="review-author"><image wx:if="{{item.author.avatarUrl}}" class="review-avatar" src="{{item.author.avatarUrl}}" mode="aspectFill" /><view wx:else class="review-avatar-placeholder">摄</view><view class="review-author-text"><text class="author-name">{{item.author.nickname}}</text><text class="submission-time">{{item.dateText}} · {{item.category}}</text></view><text class="pending-label">待审核</text></view>
+      <view class="review-title">{{item.title}}</view>
+      <view wx:if="{{item.content}}" class="review-content">{{item.content}}</view>
+      <view class="review-photos"><image wx:for="{{item.images}}" wx:for-item="photo" wx:key="fileId" src="{{photo.url}}" mode="aspectFill" data-id="{{item.id}}" data-url="{{photo.url}}" bindtap="previewPhoto" /></view>
+      <view wx:if="{{item.location}}" class="review-location">◎ {{item.location}}</view>
+      <view class="review-actions"><button class="reject-button" data-id="{{item.id}}" data-status="rejected" bindtap="reviewPost" disabled="{{!!reviewingId}}">拒绝</button><button class="approve-button" data-id="{{item.id}}" data-status="published" bindtap="reviewPost" disabled="{{!!reviewingId}}" loading="{{reviewingId === item.id}}">审核通过</button></view>
+    </view>
+  </block>
+</view>

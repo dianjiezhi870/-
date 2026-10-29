@@ -1,0 +1,57 @@
+<view class="profile-page page safe-bottom">
+  <view class="profile-hero card">
+    <text class="profile-eyebrow">MY LITTLE GALLERY</text>
+    <view class="profile-top">
+      <view class="avatar-wrap">
+        <image wx:if="{{user.avatarUrl}}" class="avatar" src="{{user.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="avatar-placeholder">摄</view>
+      </view>
+      <view class="profile-heading">
+        <view class="nickname">{{user ? user.nickname : '摄影爱好者'}}</view>
+        <view class="profile-bio">收集光影，也收集生活里的温柔。</view>
+      </view>
+      <button class="edit-button" bindtap="openEditor" disabled="{{!user || saving}}">编辑</button>
+    </view>
+    <view class="profile-stats">
+      <view class="stat"><text class="stat-number">{{stats.posts}}</text><text class="stat-label">作品</text></view>
+      <view class="stat"><text class="stat-number">{{stats.likesReceived}}</text><text class="stat-label">获赞</text></view>
+      <view class="stat"><text class="stat-number">{{stats.commentsReceived}}</text><text class="stat-label">评论</text></view>
+    </view>
+    <view wx:if="{{statsError}}" class="stats-error">{{statsError}}</view>
+  </view>
+
+  <view wx:if="{{demo}}" class="demo-note">演示模式 · 数据仅保存在本机。正式管理员需由服务端配置。</view>
+
+  <view wx:if="{{editing}}" class="editor-card card">
+    <view class="editor-head"><text class="section-title">编辑个人资料</text><button class="close-editor" bindtap="closeEditor" disabled="{{saving}}">取消</button></view>
+    <view class="editor-body">
+      <button class="avatar-picker" open-type="chooseAvatar" bindchooseavatar="chooseAvatar" disabled="{{saving}}">
+        <image wx:if="{{avatarPath || user.avatarUrl}}" class="edit-avatar" src="{{avatarPath || user.avatarUrl}}" mode="aspectFill" />
+        <view wx:else class="edit-avatar-placeholder">摄</view>
+        <text class="avatar-picker-label">选择头像</text>
+      </button>
+      <view class="nickname-field"><text class="field-label">昵称</text><input type="nickname" class="nickname-input" value="{{nickname}}" maxlength="24" placeholder="你希望大家怎么称呼你" bindinput="changeNickname" disabled="{{saving}}" /></view>
+    </view>
+    <button class="save-profile button" bindtap="saveProfile" loading="{{saving}}" disabled="{{saving}}">保存资料</button>
+  </view>
+
+  <view wx:if="{{user}}" class="account-tools card">
+    <view class="identity-row" bindtap="copyUserId">
+      <view class="identity-text"><text class="identity-label">我的用户 ID</text><text class="identity-value">{{user.id}}</text></view>
+      <text class="copy-label">复制</text>
+    </view>
+    <view wx:if="{{user.isAdmin}}" class="admin-row" bindtap="goAdmin"><text>管理空间</text><text class="admin-hint">审核作品 · 首页音乐　›</text></view>
+  </view>
+
+  <view class="gallery-title"><view><text class="section-title">我的作品</text><text class="gallery-subtitle">每一张，都是你的视角</text></view><button class="small-publish" bindtap="goPublish">＋ 发布</button></view>
+  <view wx:if="{{loading && !items.length}}" class="state-card card"><view class="state-symbol">◌</view><view>正在整理你的摄影集…</view></view>
+  <view wx:elif="{{error}}" class="state-card card"><view class="state-symbol">◎</view><view>{{error}}</view><button class="button-secondary state-action" bindtap="refresh">重新加载</button></view>
+  <view wx:elif="{{!items.length}}" class="state-card card"><view class="state-symbol">▧</view><view class="empty-title">你的摄影集，正等待第一束光。</view><view class="empty-copy">分享一张照片，从这里开始。</view><button class="button-secondary state-action" bindtap="goPublish">发布第一张作品</button></view>
+  <view wx:else class="my-gallery">
+    <view wx:for="{{items}}" wx:key="id" class="my-post card" data-id="{{item.id}}" bindtap="openPost">
+      <view class="post-photo"><image src="{{item.cover}}" mode="aspectFill" /><text class="status-badge status-{{item.status}}">{{item.statusText}}</text></view>
+      <view class="post-info"><view class="post-title">{{item.title}}</view><view class="post-meta"><text>{{item.category}}</text><text>♡ {{item.likeCount}}　◌ {{item.commentCount}}</text></view></view>
+    </view>
+  </view>
+  <view wx:if="{{items.length}}" class="list-footer">{{loadingMore ? '正在加载…' : hasMore ? '上拉看看更多作品' : '每一帧，都值得珍藏'}}</view>
+</view>

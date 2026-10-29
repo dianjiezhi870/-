@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/publish/index",
+    "pages/profile/index",
+    "pages/detail/index",
+    "pages/admin/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "黄水摄影",
+    "navigationBarBackgroundColor": "#f6f9f7",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f6f9f7",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#80918c",
+    "selectedColor": "#168d83",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {"pagePath": "pages/index/index", "text": "发现", "iconPath": "assets/home.png", "selectedIconPath": "assets/home-active.png"},
+      {"pagePath": "pages/publish/index", "text": "发布", "iconPath": "assets/add.png", "selectedIconPath": "assets/add-active.png"},
+      {"pagePath": "pages/profile/index", "text": "我的", "iconPath": "assets/user.png", "selectedIconPath": "assets/user-active.png"}
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
+}

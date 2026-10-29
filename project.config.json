@@ -1,0 +1,18 @@
+{
+  "appid": "wx6436c6c484376d9b",
+  "projectname": "黄水摄影",
+  "description": "用镜头，收藏生活的光",
+  "compileType": "miniprogram",
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "libVersion": "3.7.12",
+  "setting": {
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "urlCheck": true,
+    "uploadWithSourceMap": false
+  },
+  "packOptions": {"ignore": []}
+}

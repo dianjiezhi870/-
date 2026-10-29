@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "摄影作品",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#f6f8f4",
+  "onReachBottomDistance": 160
+}

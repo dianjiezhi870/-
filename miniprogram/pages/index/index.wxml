@@ -1,0 +1,46 @@
+<view class="home-page">
+  <view class="masthead">
+    <view class="brand-line"><view class="brand-mark"><view class="lens"></view></view><text class="brand-name">黄水摄影</text><text class="brand-dot">·</text><text class="brand-caption">把生活拍成喜欢</text></view>
+    <view class="eyebrow">HUANGSHUI PHOTO COMMUNITY</view>
+  </view>
+
+  <view class="search-box">
+    <view class="search-icon"></view>
+    <input class="search-input" placeholder="找一处风景，或一个心动瞬间" placeholder-class="search-placeholder" value="{{keyword}}" bindinput="onKeywordInput" bindconfirm="onSearch" confirm-type="search" maxlength="50" />
+    <text wx:if="{{keyword}}" class="search-clear" bindtap="onClearSearch">×</text>
+    <text class="search-submit" bindtap="onSearch">搜索</text>
+  </view>
+
+  <view class="hero">
+    <image class="hero-image" src="/assets/hero.jpg" mode="aspectFill" />
+    <view class="hero-shade"></view>
+    <view class="hero-content"><view class="hero-kicker"><view class="hero-line"></view>在黄水，遇见光</view><view class="hero-title">山水之间<text class="hero-title-second">皆是热爱</text></view><view class="hero-caption">让每一次看见，都被记住。</view></view>
+    <view class="hero-number">01 / 记录此刻</view>
+  </view>
+
+  <view wx:if="{{music.enabled || demo}}" class="music-card" bindtap="onToggleMusic">
+    <view class="record {{playing ? 'record-playing' : ''}}"><view class="record-center"></view></view>
+    <view class="music-info"><view class="music-label">今日背景音 <text class="music-admin-tag">主理人选曲</text></view><view class="music-title">{{music.enabled ? music.title : '听见风，也听见生活'}}</view><view wx:if="{{music.enabled && music.artist}}" class="music-artist">{{music.artist}}</view></view>
+    <view class="music-control {{playing ? 'control-pause' : 'control-play'}}"><view></view></view>
+  </view>
+  <view wx:if="{{musicError}}" class="music-warning">{{musicError}}</view>
+
+  <view class="discover-heading"><view><view class="section-eyebrow">EXPLORE THE EVERYDAY</view><view class="discover-title">发现好风景<text class="discover-dot">.</text></view></view><view class="sort-control"><text class="{{sort === 'latest' ? 'sort-active' : ''}}" data-sort="latest" bindtap="onSort">最新</text><text class="sort-separator">/</text><text class="{{sort === 'popular' ? 'sort-active' : ''}}" data-sort="popular" bindtap="onSort">热门</text></view></view>
+  <scroll-view class="category-scroll" scroll-x="true" show-scrollbar="false"><view class="categories"><view wx:for="{{categories}}" wx:key="*this" data-category="{{item}}" bindtap="onCategory" class="category-pill {{category === item ? 'category-active' : ''}}">{{item}}</view></view></scroll-view>
+
+  <view wx:if="{{demo}}" class="demo-note"><view class="demo-dot"></view>演示作品 · 数据仅保存在本机</view>
+  <view wx:if="{{refreshing}}" class="refresh-note">正在更新作品…</view>
+  <view class="waterfall" wx:if="{{posts.length}}">
+    <view class="waterfall-column" wx:for="{{columns}}" wx:for-item="column" wx:key="id">
+      <view class="photo-card" wx:for="{{column.items}}" wx:key="id" data-id="{{item.id}}" bindtap="onOpenPost">
+        <view class="photo-cover"><image class="photo-image" style="height: {{item.coverHeight}}rpx" src="{{item.coverUrl}}" mode="aspectFill" lazy-load="true" data-id="{{item.id}}" binderror="onCoverError" /><view class="photo-category">{{item.category}}</view><view wx:if="{{item.images.length > 1}}" class="photo-count">{{item.images.length}} 张</view></view>
+        <view class="photo-body"><view class="photo-title">{{item.title}}</view><view class="photo-footer"><view class="photo-author"><image wx:if="{{item.authorAvatar}}" class="author-avatar" src="{{item.authorAvatar}}" mode="aspectFill" /><view wx:else="" class="avatar-placeholder">摄</view><text class="author-name">{{item.authorName}}</text></view><view class="like-button {{item.liked ? 'is-liked' : ''}}" data-id="{{item.id}}" catchtap="onLike"><text class="like-heart">{{item.liked ? '♥' : '♡'}}</text><text>{{item.likeText}}</text></view></view></view>
+      </view>
+    </view>
+  </view>
+  <view wx:if="{{loading && !posts.length}}" class="feed-placeholder"><view class="placeholder-column"><view class="placeholder-card placeholder-tall"></view><view class="placeholder-card"></view></view><view class="placeholder-column"><view class="placeholder-card"></view><view class="placeholder-card placeholder-tall"></view></view></view>
+  <view wx:if="{{!loading && !error && !posts.length}}" class="empty-state"><view class="empty-aperture">◎</view><view class="empty-title">此刻，等待你的第一张照片</view><view class="empty-description">{{keyword ? '换个关键词，发现别样风景' : '把眼前的美好，分享给同样热爱摄影的人'}}</view><button class="empty-publish" bindtap="onPublish">发布摄影作品</button></view>
+  <view wx:if="{{error}}" class="feed-error"><text>{{error}}</text><button class="retry-button" bindtap="onRetry">重新加载</button></view>
+  <view wx:if="{{posts.length && !error}}" class="feed-bottom">{{loading ? '正在寻找更多好风景…' : (hasMore ? '继续向下，发现更多' : '风景没有尽头，期待你的下一张')}}<view class="bottom-line"></view></view>
+  <view class="page-end"></view>
+</view>

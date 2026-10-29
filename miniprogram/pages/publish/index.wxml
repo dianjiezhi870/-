@@ -1,0 +1,55 @@
+<view class="publish-page page safe-bottom">
+  <view class="page-intro">
+    <text class="eyebrow">SHARE YOUR PERSPECTIVE</text>
+    <view class="page-title">把这一刻，留给黄水。</view>
+    <view class="intro-copy">每个人的镜头，都值得被看见。</view>
+  </view>
+
+  <view wx:if="{{demo}}" class="demo-note">演示模式 · 作品和草稿仅保存在本机</view>
+  <view wx:if="{{!ready}}" class="connection-card card">
+    <text>{{error || '正在准备发布空间…'}}</text>
+    <button wx:if="{{error}}" class="button-secondary" bindtap="onShow">重新连接</button>
+  </view>
+
+  <view class="photo-section card">
+    <view class="section-head">
+      <text class="section-title">你的摄影作品</text>
+      <text class="image-count">{{images.length}} / 9</text>
+    </view>
+    <view class="photo-grid">
+      <view wx:for="{{images}}" wx:key="path" class="photo-tile">
+        <image class="selected-photo" src="{{item.path}}" mode="aspectFill" data-path="{{item.path}}" bindtap="previewImage" />
+        <button class="remove-photo" data-index="{{index}}" catchtap="removeImage" disabled="{{submitting}}" aria-label="删除照片">×</button>
+        <text wx:if="{{index === 0}}" class="cover-label">封面</text>
+      </view>
+      <button wx:if="{{images.length < 9}}" class="add-photo" bindtap="chooseImages" disabled="{{submitting || choosing || !ready}}" loading="{{choosing}}">
+        <text class="add-symbol">＋</text>
+        <text class="add-label">添加照片</text>
+      </button>
+    </view>
+    <view class="field-help">首张照片作为封面 · JPG / PNG / WebP · 单张不超过 10MB</view>
+  </view>
+
+  <view class="writing-card card">
+    <input class="title-input" placeholder="给作品一个名字" value="{{title}}" maxlength="40" data-field="title" bindinput="inputField" disabled="{{submitting}}" />
+    <view class="divider"></view>
+    <textarea class="story-input" placeholder="分享拍摄时的故事、光线，或你眼中的风景…" value="{{content}}" maxlength="2000" data-field="content" bindinput="inputField" disabled="{{submitting}}" auto-height="{{true}}" />
+    <view class="word-count">{{content.length}} / 2000</view>
+  </view>
+
+  <view class="details-card card">
+    <view class="section-title">为作品选择一个主题</view>
+    <view class="category-list">
+      <button wx:for="{{categories}}" wx:key="*this" class="category-pill {{category === item ? 'selected' : ''}}" data-category="{{item}}" bindtap="selectCategory" disabled="{{submitting}}">{{item}}</button>
+    </view>
+    <view class="location-row">
+      <text class="location-mark">◎</text>
+      <input class="location-input" placeholder="拍摄地点（选填）" value="{{location}}" maxlength="40" data-field="location" bindinput="inputField" disabled="{{submitting}}" />
+    </view>
+  </view>
+
+  <view wx:if="{{error && ready}}" class="form-error">{{error}}</view>
+  <view class="publish-note">请发布本人拍摄或已获得授权的照片。作品审核通过后公开展示。</view>
+  <button class="publish-button button" bindtap="submit" loading="{{submitting}}" disabled="{{submitting || choosing || !ready}}">{{submitting ? progress : '发布摄影作品'}}</button>
+  <view class="draft-note">未提交的内容会自动保存为本机草稿</view>
+</view>

@@ -1,0 +1,37 @@
+<view class="detail-page">
+  <view wx:if="{{loading && !post}}" class="detail-loading"><view class="loading-image"></view><view class="loading-line"></view><view class="loading-line short"></view></view>
+  <view wx:if="{{error}}" class="detail-error"><view class="error-icon">◎</view><view class="error-title">{{error}}</view><button class="detail-retry" bindtap="onRetry">重新加载</button></view>
+
+  <block wx:if="{{post && !error}}">
+    <view class="photo-stage" style="height: {{swiperHeight}}rpx">
+      <swiper class="photo-swiper" current="{{currentImage}}" bindchange="onSwiperChange" circular="{{post.images.length > 1}}" indicator-dots="false" style="height: {{swiperHeight}}rpx">
+        <swiper-item wx:for="{{post.images}}" wx:key="fileId"><image class="detail-image" src="{{item.url || item.fileId}}" mode="aspectFit" data-index="{{index}}" bindtap="onPreview" binderror="onImageError" /></swiper-item>
+      </swiper>
+      <view class="stage-category">{{post.category}}</view><view class="image-pagination">{{currentImage + 1}} / {{post.images.length}}</view>
+      <view wx:if="{{demo}}" class="demo-badge">演示作品 · 本机数据</view>
+    </view>
+    <view class="detail-content">
+      <view class="author-row"><view class="author-info"><image wx:if="{{post.author.avatarUrl}}" class="detail-avatar" src="{{post.author.avatarUrl}}" mode="aspectFill" /><view wx:else="" class="detail-avatar avatar-empty">摄</view><view><view class="author-nickname">{{post.author.nickname || '摄影爱好者'}}</view><view class="author-subtitle">{{createdText}}<text wx:if="{{post.location}}"> · {{post.location}}</text></view></view></view><view class="more-button" bindtap="onReport">···</view></view>
+      <view wx:if="{{post.status === 'pending'}}" class="status-note">作品审核中 · 通过后将展示给所有人</view>
+      <view wx:if="{{post.status === 'rejected'}}" class="status-note status-rejected">作品未通过审核 · 仅自己与管理员可见</view>
+      <view class="detail-title">{{post.title}}</view>
+      <view class="detail-body">{{post.content}}</view>
+      <view class="post-tags"><text>#{{post.category}}摄影</text><text>#黄水摄影</text></view>
+      <view class="post-actions"><view class="action-item {{post.liked ? 'liked' : ''}}" bindtap="onLike"><text class="action-icon">{{post.liked ? '♥' : '♡'}}</text><text>{{post.likeCount || 0}} 人喜欢</text></view><view class="action-item" bindtap="onFocusComment"><view class="comment-icon"></view><text>{{post.commentCount || 0}} 条评论</text></view><button class="share-action" open-type="share">分享<text class="share-arrow">↗</text></button></view>
+      <view wx:if="{{canDelete}}" class="owner-tools"><text bindtap="onDelete">{{deleteBusy ? '正在删除…' : '删除作品'}}</text></view>
+    </view>
+
+    <view class="comments-section" id="comments">
+      <view class="comments-heading"><text>镜头之外的共鸣</text><text class="comments-total">{{post.commentCount || 0}}</text></view>
+      <view class="comment-guidance">认真交流，让热爱被看见</view>
+      <view wx:if="{{!comments.length}}" class="comments-empty">还没有评论，写下你的第一份共鸣吧。</view>
+      <view class="comment-item" wx:for="{{comments}}" wx:key="id"><image wx:if="{{item.authorAvatar}}" class="comment-avatar" src="{{item.authorAvatar}}" mode="aspectFill" /><view wx:else="" class="comment-avatar comment-avatar-empty">摄</view><view class="comment-main"><view class="comment-byline"><text class="comment-name">{{item.authorName}}</text><text class="comment-date">{{item.dateText}}</text></view><view class="comment-content">{{item.content}}</view></view></view>
+      <view wx:if="{{commentsError}}" class="comments-error" bindtap="loadMoreComments">{{commentsError}} · 点击重试</view>
+      <view wx:elif="{{nextCursor !== null && nextCursor !== undefined}}" class="load-more" bindtap="loadMoreComments">{{commentsLoading ? '正在加载…' : '查看更多评论 ↓'}}</view>
+      <view wx:elif="{{comments.length}}" class="comments-end">每一句认真，都是一份欣赏</view>
+    </view>
+
+    <view class="comment-bar"><input class="comment-input" value="{{commentText}}" placeholder="说说这张照片打动你的地方…" placeholder-class="comment-placeholder" bindinput="onCommentInput" bindconfirm="onSendComment" bindblur="onCommentBlur" focus="{{commentFocus}}" maxlength="500" confirm-type="send" cursor-spacing="24" /><button class="comment-send" loading="{{commentBusy}}" disabled="{{commentBusy || !commentText}}" bindtap="onSendComment">发送</button></view>
+    <view class="composer-space"></view>
+  </block>
+</view>

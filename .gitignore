@@ -1,0 +1,9 @@
+node_modules/
+project.private.config.json
+miniprogram/config.local.js
+.env*
+!.env.example
+*.pem
+*.key
+artifacts/
+.DS_Store
