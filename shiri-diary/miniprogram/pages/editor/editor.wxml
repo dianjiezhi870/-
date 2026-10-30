@@ -1,0 +1,10 @@
+<view class="page editor-page"><view wx:if="error" class="error">{{error}}</view><block wx:if="ready">
+  <view class="between"><text class="tiny-label">{{dateLabel}}</text><text class="pill">只在本机</text></view>
+  <view wx:if="draftRestored" class="notice between restore"><text>找回了上次未保存的草稿。</text><button bindtap="discard">丢弃草稿</button></view>
+  <input class="title-input" placeholder="给今天起个名字（选填）" value="{{title}}" data-field="title" bindinput="edit" maxlength="40" />
+  <view class="field-label">今天的心情</view><view class="choices"><button wx:for="{{moods}}" wx:key="id" class="choice {{mood === item.id ? 'chosen' : ''}}" data-id="{{item.id}}" bindtap="pickMood">{{item.symbol}} {{item.label}}</button></view>
+  <view class="weather-row"><text class="tiny-label">天气</text><button wx:for="{{weathers}}" wx:key="*this" class="weather {{weather === item ? 'chosen' : ''}}" data-weather="{{item}}" bindtap="pickWeather">{{item}}</button></view>
+  <view class="writing-paper"><textarea class="content-input" placeholder="今天发生了什么？一个瞬间、一点感受，都值得写下来。" value="{{content}}" data-field="content" bindinput="edit" maxlength="6000" auto-height cursor-spacing="120" show-confirm-bar="true" adjust-position="true"/><view class="word-count">{{wordCount}} 字 · 最多 6000 字符</view></view>
+  <view class="tags-area"><view class="field-label">给回忆加个标签</view><input value="{{tagsText}}" placeholder="例如：散步，家人，小确幸" maxlength="60" data-field="tagsText" bindinput="edit"/><view class="small muted">用逗号分隔，最多 5 个，每个最多 10 字</view></view>
+  <view class="save-status">{{status || '正文必填，标题可以稍后再想。'}}</view><button class="primary full" bindtap="save" loading="{{saving}}" disabled="{{saving}}">保存这一天</button><button wx:if="status" class="quiet full discard" bindtap="discard">丢弃未保存修改</button>
+</block></view>

@@ -1,0 +1,22 @@
+<view class="page">
+  <view class="between intro"><view><view class="eyebrow">A LITTLE EVERY DAY</view><view class="heading">把日子，慢慢写下来。</view></view><image class="intro-leaf" src="/assets/leaf-active.png" /></view>
+  <view wx:if="error" class="error">{{error}}</view>
+  <view class="today-card">
+    <view class="between"><view class="today-label">{{monthLabel}}<text class="today-week">{{weekday}}</text></view><text class="today-badge">今天</text></view>
+    <view class="between today-body"><view class="day-number">{{day}}</view><view class="today-copy">生活不必特别精彩，<view>也值得认真收藏。</view></view></view>
+    <button class="write-button" bindtap="write">{{hasToday ? '继续写今天' : '记下今天'}}<text class="plus">＋</text></button>
+  </view>
+  <view class="stats"><view><text class="stat-number">{{stats.total}}</text><view>篇日记</view></view><view><text class="stat-number">{{stats.streak}}</text><view>天连续记录</view></view><view><text class="stat-number">{{stats.words}}</text><view>字生活片段</view></view></view>
+  <view wx:if="notice" class="notice between gap"><text>日记只保存在当前设备。换机或清理缓存前，记得在「我的」里备份。</text><button bindtap="dismiss">知道了</button></view>
+  <view class="between list-head"><view class="section-title">我的日常</view><text class="tiny-label">{{totalMatches}} 篇记录</text></view>
+  <view class="search-wrap"><text class="search-symbol">⌕</text><input placeholder="找找某一天、某件小事…" value="{{keyword}}" bindinput="search" maxlength="80" confirm-type="search" /></view>
+  <scroll-view scroll-x class="filters"><view class="filter-row"><view class="filter {{filter === '' ? 'active' : ''}}" data-id="" bindtap="filter">全部</view><view wx:for="{{moods}}" wx:key="id" class="filter {{filter === item.id ? 'active' : ''}}" data-id="{{item.id}}" bindtap="filter">{{item.label}}</view></view></scroll-view>
+  <view wx:if="!entries.length && !error" class="empty"><image class="empty-art" src="/assets/book-active.png"/><view class="empty-title">{{keyword || filter ? '还没有找到这样的记录' : '第一篇，留给今天'}}</view><view class="sub">{{keyword || filter ? '换个关键词或心情试试。' : '从一句话开始，也很好。'}}</view><button wx:if="!keyword && !filter" class="quiet" bindtap="write">写下此刻 →</button></view>
+  <view wx:for="{{entries}}" wx:key="date" class="entry-card" data-date="{{item.date}}" bindtap="open" role="button" aria-label="{{item.date + ' ' + item.title}}">
+    <view class="between"><text class="entry-date">{{item.date}} · {{item.weekday}}</text><text class="pill">{{item.moodSymbol}} {{item.moodLabel}}</text></view>
+    <view class="entry-title">{{item.title}}</view><view class="entry-preview">{{item.preview}}</view>
+    <view class="between entry-bottom"><view><text wx:for="{{item.tags}}" wx:for-item="tag" wx:key="*this" class="tag">#{{tag}}</text></view><text class="small muted">{{item.wordCount}} 字</text></view>
+  </view>
+  <button wx:if="entries.length < totalMatches" class="quiet full" bindtap="more">再看一些记录</button>
+  <view class="footer-note">日子有迹可循，平凡也会发光。</view>
+</view>

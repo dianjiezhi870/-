@@ -1,0 +1,1 @@
+.detail-date{color:#8c9680;font-size:25rpx;margin:22rpx 0}.detail-title{font-size:50rpx;margin-bottom:25rpx;overflow-wrap:break-word}.detail-paper{margin:38rpx 0 20rpx;font-size:31rpx;line-height:2;background:#fffef9;padding:32rpx;border:1rpx solid #eceadf;border-radius:25rpx;min-height:380rpx}.delete{margin-top:22rpx}

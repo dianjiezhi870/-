@@ -1,0 +1,21 @@
+{
+  "pages": ["pages/home/home", "pages/calendar/calendar", "pages/me/me", "pages/editor/editor", "pages/detail/detail", "pages/backup/backup", "pages/info/info"],
+  "window": {
+    "navigationBarTitleText": "拾日手记",
+    "navigationBarBackgroundColor": "#F7F5EF",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F7F5EF",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#97988D", "selectedColor": "#556D5E", "backgroundColor": "#FCFBF7", "borderStyle": "white",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "日记", "iconPath": "assets/book.png", "selectedIconPath": "assets/book-active.png" },
+      { "pagePath": "pages/calendar/calendar", "text": "日历", "iconPath": "assets/calendar.png", "selectedIconPath": "assets/calendar-active.png" },
+      { "pagePath": "pages/me/me", "text": "我的", "iconPath": "assets/leaf.png", "selectedIconPath": "assets/leaf-active.png" }
+    ]
+  },
+  "style": "v2",
+  "lazyCodeLoading": "requiredComponents",
+  "sitemapLocation": "sitemap.json"
+}
